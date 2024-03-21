@@ -1,0 +1,21 @@
+problem:Write a query to print all prime numbers less than or equal to . Print your result on a single line, and use the ampersand () character as your separator (instead of a space).
+
+For example, the output for all prime numbers  would be:
+solution:
+
+WITH RECURSIVE t AS (
+    SELECT 2 AS nums
+    UNION
+    SELECT nums + 1
+    FROM t
+    WHERE nums < 1000
+)
+SELECT GROUP_CONCAT(nums SEPARATOR '&')
+FROM t
+WHERE nums NOT IN (
+    SELECT DISTINCT a.nums
+    FROM t a
+    JOIN t b
+    ON b.nums != a.nums 
+        AND a.nums % b.nums = 0
+)
